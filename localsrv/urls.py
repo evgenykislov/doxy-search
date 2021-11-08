@@ -4,5 +4,5 @@ from .views import project_search
 
 
 urlpatterns = [
-    path("<str:project>/search/", project_search)
+    path("projects/<str:project>/search/", project_search)
 ]
