@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="{{ timeout }};url={{ url }}" />
+    <title>Title</title>
+</head>
+<body>
+    <p>
+    {% if message == "add_success" %} The project was added successfully ...
+    {% elif message == "delete_success" %} The project was deleted successfully ...
+    {% else %} Unknown message !
+    {% endif %}
+    </p>
+
+    <p>Redirection in {{ timeout }} seconds ...</p>
+    <p>Or click url <a href="{{ url }}">{{ url }}</a></p>
+</body>
+</html>
