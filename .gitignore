@@ -62,7 +62,7 @@ db.sqlite3
 db.sqlite3-journal
 
 
-localsrv/migrations/
+localsrv/migrations/0*
 
 # Flask stuff:
 instance/
