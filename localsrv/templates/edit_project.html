@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+    {% if form_type == "add" %}Adding a new project
+    {% elif form_type == "edit" %}Editing the project
+    {% else %}Unknown form
+    {% endif %}
+    </title>
+</head>
+<body>
+    <p>Project</p>
+    <form method="post" action="make/">
+        {% csrf_token %}
+        <label>Name</label><input type="text" value="{{ name }}" id="name" name="name"/>
+        <label>Slug</label><input type="text" value="{{ slug }}" id="slug" name="slug"/>
+        <p>
+        <label>Due to security of modern browsers, you should manually copy path to searchdata file</label>
+        <labal>Path to searchdata</labal>
+        <input type="text" value="{{ searchpath }}" name="searchpath"/>
+        </p>
+        <input type="text" value="searchdata.xml"/>
+<!--        <input type="submit" value="Save and Continue" name="save">  -->
+        <input type="submit" value="Save and Exit" name="save_exit">
+<!--        <input type="submit" value="Save And Add New" name="save_new"> -->
+        <input type="submit" value="Exit" name="exit">
+    </form>
+</body>
+</html>

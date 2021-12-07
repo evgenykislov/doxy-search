@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form method="post" action="{{ url_no }}">
+    {% csrf_token %}
+    <p>Are you sure you want to delete project {{ project }}?</p>
+        <input type="submit" value="No" name="exit">
+        <input type="submit" value="Yes, delete" formaction="{{ url_yes }}">
+    </form>
+</body>
+</html>
