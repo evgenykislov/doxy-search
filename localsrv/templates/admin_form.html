@@ -6,26 +6,40 @@
 </head>
 <body>
     <h1>Projects</h1>
-    {% for it in form.data %}
-    <div>
-        <h2>{{ it.name }}</h2>
-        <p>{{ it.slug }}</p>
-        <p>Url for doxygen:</p>
-        <p>{{ it.search_url }}</p>
-        <form action="{{ it.parse_url }}">
-            <button type="submit">Update</button>
-        </form>
-        <form action="{{ it.delete_url }}">
-            <button type="submit">Delete</button>
-        </form>
-        <form action="{{ it.edit_url }}">
-            <button type="submit">Edit</button>
-        </form>
-    </div>
-
-    {% endfor %}
-
     <form action="add/"><button type="submit">Add new project</button></form>
-
+    <table>
+        <tbody>
+            {% for it in form.data %}
+            <tr>
+                <td>
+                    <table>
+                        <tr><th>{{ it.name }}</th></tr>
+                        <tr><td><a href="{{ it.search_url }}">{{ it.search_url }}</a></td></tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr><td>
+                            <form action="{{ it.parse_url }}">
+                                <button type="submit">Update</button>
+                            </form>
+                        </td></tr>
+                        <tr><td>
+                            <form action="{{ it.edit_url }}">
+                                <button type="submit">Change</button>
+                            </form>
+                        </td></tr>
+                        <tr><td>
+                            <form action="{{ it.delete_url }}">
+                                <button type="submit">Delete</button>
+                            </form>
+                        </td></tr>
+                    </table>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form action="add/"><button type="submit">Add new project</button></form>
 </body>
 </html>
