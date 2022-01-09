@@ -4,9 +4,26 @@ from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 
+from django.utils.text import slugify
+
 from localsrv.models import Project
 
 from .message_form import show_message
+
+def generate_slug(name):
+    slug = slugify(name)
+    if len(slug) == 0:
+        slug = "ds"
+    item = Project.objects.filter(Slug=slug).first()
+    if item is None:
+        return slug
+    # need to generate new slug
+    for i in range(1, 100):
+        sl = slug + "-" + str(i)
+        if Project.objects.filter(Slug=sl).first() is None:
+            return sl
+    return None
+
 
 
 def edit_project_edit(request, project):
@@ -41,7 +58,10 @@ def edit_project_make_add(request):
     if need_add:
         prj = Project()
         prj.Title = request.POST["name"]
-        prj.Slug = request.POST["slug"]
+        slug = generate_slug(prj.Title)
+        if slug is None:
+            return HttpResponse("Error. Can't generate unique slug")
+        prj.Slug = slug
         prj.DoxySearchPath = request.POST["searchpath"]
         prj.save()
         key = prj.pk
@@ -69,7 +89,6 @@ def edit_project_make_edit(request, project):
         if item is None:
             return show_message(request, "/localsrv/admin/", 5, "unknown_project")
         item.Title = request.POST["name"]
-        item.Slug = request.POST["slug"]
         item.DoxySearchPath = request.POST["searchpath"]
         item.save()
         slug = item.Slug
