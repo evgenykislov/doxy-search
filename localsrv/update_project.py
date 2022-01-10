@@ -12,11 +12,12 @@ import xml.etree.ElementTree as eltree
 def project_parse(request, project):
     prj = Project.objects.get(Slug = project)
     filename = prj.DoxySearchPath
+    filename += "/searchdata.xml"
     try:
         rnode = eltree.parse(filename).getroot()
     except eltree.ParseError:
         return show_message(request, "/localsrv/admin/", 10, "cant_parse_file")
-    except FileNotFoundError:
+    except (FileNotFoundError, NotADirectoryError):
         return alert_file_not_found(request, "/localsrv/admin/", 10, filename)
 
     Topic.objects.filter(Project = prj).delete()
