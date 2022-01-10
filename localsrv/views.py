@@ -93,57 +93,6 @@ def project_search(request, project):
 #        print(tpc.ItemFormatText)
 
 
-def project_parse(request, project):
-    prj = Project.objects.get(Slug = project)
-    Topic.objects.filter(Project = prj).delete()
-    rnode = eltree.parse(prj.DoxySearchPath).getroot()
-    for doc in rnode:
-        item_type = ""
-        item_name = ""
-        item_url = ""
-        item_keywords = ""
-        item_text = ""
-        item_args = ""
-        for fld in doc.findall("field"):
-            tag = fld.get("name")
-            if tag is None:
-                continue
-            if tag == "type":
-                item_type = fld.text
-            if tag == "name":
-                item_name = fld.text
-            if tag == "url":
-                item_url = fld.text
-            if tag == "keywords" and fld.text is not None:
-                item_keywords = fld.text
-            if tag == "text" and fld.text is not None:
-                item_text = fld.text
-            if tag == "args" and fld.text is not None:
-                item_args = fld.text
-        txt = ""
-        if item_type == "class" or item_type == "struct" or item_type == "variable":
-            dummy_tmp = 0
-        elif item_type == "source":
-            continue
-        elif item_type == "function":
-            item_name = item_name + item_args
-            txt += item_name + "\n"
-        else:
-            return HttpResponse("Unknown type: " + item_type)
-        tpc = Topic()
-        tpc.Project = prj
-        tpc.Type = item_type
-        tpc.Name = item_name
-        tpc.Url = item_url
-        # Add keywords
-        # TODO detect duplicates
-        for kw in item_keywords.split():
-            txt += kw + "\n"
-        txt += item_text
-        tpc.SearchText = txt
-        tpc.save()
-
-    return HttpResponse("ok")
 
 
 def project_alert_delete(request, project):

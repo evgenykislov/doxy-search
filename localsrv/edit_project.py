@@ -30,12 +30,12 @@ def edit_project_edit(request, project):
     item = Project.objects.filter(Slug = project).first()
     if item is None:
         return show_message(request, "/localsrv/admin/", 5, "unknown_project")
-    context = {"form_type": "edit", "name": item.Title, "slug": item.Slug, "searchpath": item.DoxySearchPath}
+    context = {"form_type": "edit", "name": item.Title, "searchpath": item.DoxySearchPath}
     return render(request, "edit_project.html", context)
 
 
 def edit_project_add(request):
-    context = {"form_type": "add", "name": "", "slug": "", "searchpath": ""}
+    context = {"form_type": "add", "name": "", "searchpath": ""}
     return render(request, "edit_project.html", context)
 
 
@@ -83,7 +83,6 @@ def edit_project_make_edit(request, project):
     if "exit" in request.POST:
         need_exit = True
 
-    slug = ""
     if need_edit:
         item = Project.objects.filter(Slug=project).first()
         if item is None:
@@ -91,8 +90,7 @@ def edit_project_make_edit(request, project):
         item.Title = request.POST["name"]
         item.DoxySearchPath = request.POST["searchpath"]
         item.save()
-        slug = item.Slug
 
     if need_exit:
         return HttpResponseRedirect("/localsrv/admin/")
-    return edit_project_edit(request, slug)
+    return edit_project_edit(request, project)

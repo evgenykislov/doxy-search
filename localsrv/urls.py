@@ -1,7 +1,8 @@
 
 from django.urls import path
-from .views import project_admin, project_search, project_parse, project_alert_delete, project_make_delete
+from .views import project_admin, project_search, project_alert_delete, project_make_delete
 from .edit_project import edit_project_add, edit_project_make_add, edit_project_edit, edit_project_make_edit
+from .update_project import project_parse
 
 urlpatterns = [
     path("admin/add/", edit_project_add),
