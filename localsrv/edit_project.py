@@ -69,6 +69,8 @@ def edit_project_make_add(request):
     if need_exit:
         if need_add:
             return show_message(request, "/localsrv/admin/", 5, "add_success")
+        else:
+            return HttpResponseRedirect("/localsrv/admin/")
     return HttpResponse("Error. Unknown result")
 
 

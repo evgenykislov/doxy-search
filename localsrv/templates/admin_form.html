@@ -3,42 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <title>Doxy-Search Admin</title>
+    <style type="text/css">
+        table {
+            margin-left: 20px;
+            margin-right: 20px;
+            border: none;
+            border-spacing: 0px;
+        }
+
+        tr.docrow:nth-child(odd) {
+            background-color: lightgray;
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        td.searchurl {
+            padding-left: 20px;
+        }
+
+    </style>
 </head>
 <body>
     <h1>Local Documentations</h1>
-    <form action="add/"><button type="submit">Adds new documentation</button></form>
     <table>
         <tbody>
             {% for it in form.data %}
-            <tr>
+            <tr class="docrow">
                 <td>
                     <table>
                         <tr><th>{{ it.name }}</th></tr>
-                        <tr><td><a href="{{ it.search_url }}">{{ it.search_url }}</a></td></tr>
+                        <tr><td class="searchurl"><a href="{{ it.search_url }}">{{ it.search_url }}</a></td></tr>
                     </table>
                 </td>
                 <td>
-                    <table>
-                        <tr><td>
-                            <form action="{{ it.parse_url }}">
-                                <button type="submit">Update</button>
-                            </form>
-                        </td></tr>
-                        <tr><td>
-                            <form action="{{ it.edit_url }}">
-                                <button type="submit">Change</button>
-                            </form>
-                        </td></tr>
-                        <tr><td>
-                            <form action="{{ it.delete_url }}">
-                                <button type="submit">Delete</button>
-                            </form>
-                        </td></tr>
-                    </table>
+                    <form action="{{ it.parse_url }}">
+                        <button type="submit">Update</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ it.edit_url }}">
+                        <button type="submit">Change</button>
+                    </form>
+                </td>
+                <td>
+                    <form action="{{ it.delete_url }}">
+                        <button type="submit">Delete</button>
+                    </form>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
+    <p></p>
+    <form action="add/"><button type="submit">Adds new documentation</button></form>
 </body>
 </html>

@@ -2,6 +2,7 @@ import json
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.utils.datastructures import MultiValueDictKeyError
 
 from .message_form import alert_delete_project, show_message
 
@@ -41,9 +42,14 @@ def find_text_posttail(txt, pos):
 
 def project_search(request, project):
     prj = Project.objects.get(Slug = project)
-    query = request.GET["q"]
-    ql = query.lower()
-    callback = request.GET["cb"]
+    try:
+        query = request.GET["q"]
+        ql = query.lower()
+        callback = request.GET["cb"]
+    except MultiValueDictKeyError:
+        # It is not search request
+        return render(request, "search_help.html", {})
+    # Process search request
     items = []
     for tpc in Topic.objects.filter(Project=prj):
         utxt = tpc.SearchText

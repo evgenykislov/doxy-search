@@ -3,23 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <title>
-    {% if form_type == "add" %}Adding a new project
-    {% elif form_type == "edit" %}Editing the project
+    {% if form_type == "add" %}Adding a new documentation
+    {% elif form_type == "edit" %}Editing the documentation
     {% else %}Unknown form
     {% endif %}
     </title>
 </head>
 <body>
-    <p>Project</p>
+    <h1>Documentation</h1>
     <form method="post" action="make/">
         {% csrf_token %}
-        <label>Name</label><input type="text" value="{{ name }}" id="name" name="name"/>
+        <table>
+            <tr>
+                <td><label>Name</label></td>
+                <td><input type="text" value="{{ name }}" id="name" name="name"/></td>
+            </tr>
+            <tr>
+                <td><labal>Path to searchdata.xml</labal></td>
+                <td><input type="text" value="{{ searchpath }}" name="searchpath"/></td>
+            </tr>
+        </table>
         <p>
         <label>Due to security of modern browsers, you should manually copy path to searchdata file</label>
-        <labal>Path to searchdata</labal>
-        <input type="text" value="{{ searchpath }}" name="searchpath"/>
         </p>
-        <input type="text" value="searchdata.xml"/>
 <!--        <input type="submit" value="Save and Continue" name="save">  -->
         <input type="submit" value="Save and Exit" name="save_exit">
 <!--        <input type="submit" value="Save And Add New" name="save_new"> -->
