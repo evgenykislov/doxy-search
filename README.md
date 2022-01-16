@@ -19,7 +19,7 @@ Requires python version 3 installed which has Django package installed. Python a
   In the folder of the downloaded doxy-search (it contains the manage.py file), execute the following commands:
   1. ** Initializing the database **
   python3 manage.py makemigrations
-  python3 manage.py migrate --run-syncdb
+  python3 manage.py migrate
   1. ** Run doxy-search **
   python3 manage.py runserver
 
