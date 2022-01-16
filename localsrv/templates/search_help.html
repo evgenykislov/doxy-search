@@ -5,7 +5,27 @@
     <title>Search Link Help</title>
 </head>
 <body>
-    This is search link and it's suitable for search purpose only. Please, insert the link value to SEARCHENGINE_URL field into doxygen file.
-Or you can use doxywizard: Go to tab Expert, select Html section and you'll see SEARCHENGINE_URL field.
+<p>This is search link for doxygen documentation.</p>
+<p>Help about usage:</p>
+<p>Open Doxyfile in doxywizard and set the following fields in the Expert tab in the HTML topic:</p>
+    <table>
+        <tr>
+            <td>SEARCHENGINE</td><td>Yes</td>
+        </tr>
+        <tr>
+            <td>SERVER_BASED_SEARCH</td><td>Yes</td>
+        </tr>
+        <tr>
+            <td>EXTERNAL_SEARCH</td><td>Yes</td>
+        </tr>
+        <tr>
+            <td>SEARCHENGINE_URL</td><td>Page url. Get from address bar.</td>
+        </tr>
+        <tr>
+            <td>SEARCHDATA_FILE</td><td>searchdata.xml</td>
+        </tr>
+    </table>
+    <p>Run doxygen</p>
+    <p>Go to main page /localsrv/admin</p>
 </body>
 </html>
