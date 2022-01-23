@@ -70,4 +70,5 @@ def project_parse(request, project):
         tpc.SearchText = txt
         tpc.save()
 
-    return HttpResponse("ok")
+
+    return show_message(request, "/localsrv/admin/", 3, "parse_success")
