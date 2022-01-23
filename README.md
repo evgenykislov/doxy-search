@@ -18,8 +18,9 @@ Execute the following commands in the folder of doxy-search (contains the manage
 **python3 manage.py makemigrations**  
 **python3 manage.py migrate**  
 1. Run doxy-search application  
-**python3 manage.py runserver**
-* I some cases you should use python instead of python3 or adds its path.   
+**python3 manage.py runserver**  
+  
+In some cases you should use **python** instead of **python3** or add the path to the application.  
 
 **Usage**  
 Open link [doxy-search admin](http://127.0.0.1:8000) into browser and follow **Quick start** section (doxy-search application shall be run).    
