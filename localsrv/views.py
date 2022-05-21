@@ -4,7 +4,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.datastructures import MultiValueDictKeyError
 
-from .message_form import alert_delete_project, show_message
+from .edit_project import modify_available
+from .message_form import alert_delete_project, show_message, alert_access_deny
 
 from localsrv.models import Project, Topic
 from localsrv.admin_form import AdminForm
@@ -100,18 +101,26 @@ def project_search(request, project):
 
 
 
+# TODO Relocate into edit_project.py
 
 def project_alert_delete(request, project):
     return alert_delete_project(request, "/localsrv/delete/" + project + "/make/",
         "/localsrv/admin/", project)
 
+# TODO Relocate into edit_project.py
 
 def project_make_delete(request, project):
+    if not modify_available(request.user):
+        return alert_access_deny(request)
+
     recs = Project.objects.filter(Slug=project).delete()
     return show_message(request, "/localsrv/admin/", 5, "delete_success")
 
 
 def project_admin(request):
+    if not modify_available(request.user):
+        return alert_access_deny(request)
+
     pf = AdminForm()
     pf.SetServerAddress(request.get_host())
     pf.SetModelData(Project)

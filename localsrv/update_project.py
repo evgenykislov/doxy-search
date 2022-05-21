@@ -10,6 +10,9 @@ import xml.etree.ElementTree as eltree
 
 
 def project_parse(request, project):
+    if not modify_available(request.user):
+        return alert_access_deny(request)
+
     prj = Project.objects.get(Slug = project)
     filename = prj.DoxySearchPath
     filename += "/searchdata.xml"

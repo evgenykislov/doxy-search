@@ -20,3 +20,7 @@ def alert_file_not_found(request, url, timeout, filename):
         "message": "file_not_found",
         "filename": filename}
     return render(request, "message_form.html", content)
+
+
+def alert_access_deny(request):
+    return show_message(request, "/accounts/login/", 5, "access_deny")

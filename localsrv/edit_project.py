@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.shortcuts import render
 from django.views.generic.edit import FormView
 from django.http import HttpResponseRedirect
@@ -8,7 +9,21 @@ from django.utils.text import slugify
 
 from localsrv.models import Project
 
-from .message_form import show_message
+from .message_form import show_message, alert_access_deny
+
+# Checks the user can modify something
+def modify_available(user):
+    try:
+        if settings.LOCAL_SRV:
+            return True
+    except AttributeError:
+        pass
+
+    if user.is_authenticated:
+        return True
+
+    return False
+
 
 def generate_slug(name):
     slug = slugify(name)
@@ -40,6 +55,9 @@ def edit_project_add(request):
 
 
 def edit_project_make_add(request):
+    if not modify_available(request.user):
+        return alert_access_deny(request)
+
     need_add = False
     need_exit = False
     need_new = False
@@ -75,6 +93,9 @@ def edit_project_make_add(request):
 
 
 def edit_project_make_edit(request, project):
+    if not modify_available(request.user):
+        return alert_access_deny(request)
+
     need_edit = False
     need_exit = False
     if "save" in request.POST:
