@@ -128,3 +128,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # LOCAL_SRV = False
+
+MEDIA_URL = "/inpdata/"
+MEDIA_ROOT = BASE_DIR / "inpdata"
+

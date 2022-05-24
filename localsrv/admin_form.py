@@ -19,6 +19,11 @@ class AdminForm(forms.Form):
             item["delete_url"] = self.GetDeleteUrl(p.Slug)
             item["edit_url"] = self.GetEditUrl(p.Slug)
 
+            if p.DoxySearchPath:
+                item["update_url"] = self.GetParseUrl(p.Slug)
+            else:
+                item["update_url"] = self.GetUpdateUrl(p.Slug)
+
             self.data.append(item)
 
     def GetSearchUrl(self, slug_name):
@@ -33,3 +38,7 @@ class AdminForm(forms.Form):
 
     def GetEditUrl(self, slug_name):
         return "http://" + self.server_address + "/" + "localsrv" + "/edit/" + slug_name + "/"
+
+
+    def GetUpdateUrl(self, slug_name):
+        return "http://" + self.server_address + "/" + "localsrv" + "/update/" + slug_name + "/"

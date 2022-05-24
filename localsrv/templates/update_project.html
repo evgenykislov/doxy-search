@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update the documentation</title>
+</head>
+<body>
+    <h1>Update {{ name }}</h1>
+
+    <form method="post" enctype="multipart/form-data" action="make/">
+        {% csrf_token %}
+        <input type="file" name="searchfile">
+        <input type="submit" value="Update" name="save_exit">
+        <input type="submit" value="Exit" name="exit">
+    </form>
+</body>
+</html>
