@@ -22,5 +22,13 @@ def alert_file_not_found(request, url, timeout, filename):
     return render(request, "message_form.html", content)
 
 
+def alert_cant_parse_file(request, url, timeout, description):
+    content = {"url": url,
+        "timeout": timeout,
+        "message": "cant_parse_data",
+        "description": description}
+    return render(request, "message_form.html", content)
+
+
 def alert_access_deny(request):
     return show_message(request, "/accounts/login/", 5, "access_deny")

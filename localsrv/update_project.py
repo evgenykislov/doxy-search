@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 from .edit_project import modify_available
-from .message_form import show_message, alert_file_not_found
+from .message_form import show_message, alert_file_not_found, alert_cant_parse_file
 
 from localsrv.models import Project, Topic
 
@@ -20,11 +20,11 @@ def project_make_parsing(project, filename, filedata):
         elif filedata:
             rnode = eltree.fromstring(filedata)
         else:
-            return "hasnt_data"
-    except eltree.ParseError:
-        return "cant_parse"
+            return "hasnt_data", None
+    except eltree.ParseError as err:
+        return "cant_parse", str(err)
     except (FileNotFoundError, NotADirectoryError):
-        return "file_not_found"
+        return "file_not_found", filename
 
     prj = Project.objects.get(Slug = project)
     Topic.objects.filter(Project = prj).delete()
@@ -76,7 +76,7 @@ def project_make_parsing(project, filename, filedata):
         txt += item_text
         tpc.SearchText = txt
         tpc.save()
-    return None
+    return None, None
 
 
 def project_parse(request, project):
@@ -92,7 +92,7 @@ def project_parse(request, project):
     prj = Project.objects.get(Slug = project)
     filename = prj.DoxySearchPath
     filename += "/searchdata.xml"
-    res = project_make_parsing(project, filename)
+    res = project_make_parsing(project, filename, None)
     if res == None:
         return show_message(request, "/localsrv/admin/", 3, "parse_success")
     elif res == "cant_parse":
@@ -127,12 +127,12 @@ def project_make_update(request, project):
     except AttributeError:
         filedata = fileobj.read()
 
-    res = project_make_parsing(project, filename, filedata)
+    res, arg = project_make_parsing(project, filename, filedata)
     if res == None:
         return show_message(request, "/localsrv/admin/", 3, "parse_success")
     elif res == "cant_parse":
-        return show_message(request, "/localsrv/admin/", 10, "cant_parse_file")
+        return alert_cant_parse_file(request, "/localsrv/admin/", 10, arg)
     elif res == "file_not_found":
-        return alert_file_not_found(request, "/localsrv/admin/", 10, filename)
+        return alert_file_not_found(request, "/localsrv/admin/", 10, arg)
 
     return HttpResponse("Unknown error: " + res)
