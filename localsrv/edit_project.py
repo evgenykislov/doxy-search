@@ -80,7 +80,7 @@ def edit_project_make_add(request):
         if slug is None:
             return HttpResponse("Error. Can't generate unique slug")
         prj.Slug = slug
-        prj.DoxySearchPath = request.POST["searchpath"]
+        prj.DoxySearchPath = ""
         prj.save()
         key = prj.pk
 
@@ -111,7 +111,7 @@ def edit_project_make_edit(request, project):
         if item is None:
             return show_message(request, "/localsrv/admin/", 5, "unknown_project")
         item.Title = request.POST["name"]
-        item.DoxySearchPath = request.POST["searchpath"]
+        item.DoxySearchPath = ""
         item.save()
 
     if need_exit:

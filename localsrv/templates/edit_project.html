@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>
-    {% if form_type == "add" %}Adding a new documentation
-    {% elif form_type == "edit" %}Editing the documentation
+    {% if form_type == "add" %}Adding a new search base
+    {% elif form_type == "edit" %}Editing the search base
     {% else %}Unknown form
     {% endif %}
     </title>
 </head>
 <body>
-    <h1>Documentation</h1>
+    <h1>Search Base</h1>
     <form method="post" action="make/">
         {% csrf_token %}
         <table>
@@ -18,13 +18,8 @@
                 <td><label>Name</label></td>
                 <td><input type="text" value="{{ name }}" id="name" name="name"/></td>
             </tr>
-            <tr>
-                <td><labal>Path to searchdata.xml</labal></td>
-                <td><input type="text" value="{{ searchpath }}" name="searchpath"/></td>
-            </tr>
         </table>
         <p>
-        <label>Due to security of modern browsers, you should manually copy path to searchdata file</label>
         </p>
 <!--        <input type="submit" value="Save and Continue" name="save">  -->
         <input type="submit" value="Save and Exit" name="save_exit">

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Doxy-Search Admin</title>
+    <title>Search Bases Admin</title>
     <style type="text/css">
         table {
             margin-left: 20px;
@@ -26,7 +26,7 @@
     </style>
 </head>
 <body>
-    <h1>Local Documentations</h1>
+    <h1>Doxygen Search Bases</h1>
     <table>
         <tbody>
             {% for it in form.data %}
@@ -44,7 +44,7 @@
                 </td>
                 <td>
                     <form action="{{ it.edit_url }}">
-                        <button type="submit">Change</button>
+                        <button type="submit">Rename</button>
                     </form>
                 </td>
                 <td>
@@ -57,14 +57,13 @@
         </tbody>
     </table>
     <p></p>
-    <form action="add/"><button type="submit">Adds new documentation</button></form>
+    <form action="add/"><button type="submit">Add New</button></form>
     <h1>Quick start:</h1>
     <p>
         <ol>
-            <li>Click "Adds new documentation" button and add new documentation with a desired name and empty path;</li>
-            <li>Open link of new documentation (<em>http://127.0.0 ...</em>), change doxygen project according instruction and generate the documentation. Back to main page;</li>
-            <li>Click "Change" button of the documentation and set path to searchdata.xml file was generated;</li>
-            <li>Click "Update" button of the documentation. Wait for the message <em>... updated successfully ..</em> or fix file path in case of errors;</li>
+            <li>Click "Add New" button and create new search base with a desired name;</li>
+            <li>Open link of new base (<em>{{ request.scheme }}://{{ request.get_host }} ...</em>). Change doxygen project according instruction and generate doxy doc;</li>
+            <li>Click "Update" button of the base. Select file with new search data (searchdata.xml) and click "Update". Wait for the message <em>... updated successfully ..</em> or use another (right) file in case of error;</li>
             <li>Open your doxygen documentation and use search field.</li>
         </ol>
     </p>

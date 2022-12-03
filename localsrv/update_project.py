@@ -1,7 +1,7 @@
 
 from django.conf import settings
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 
 from django.shortcuts import render
 
@@ -15,12 +15,16 @@ import xml.etree.ElementTree as eltree
 
 def project_make_parsing(project, filename, filedata):
     try:
+        data = ""
         if filename:
-            rnode = eltree.parse(filename).getroot()
+            with open(filename, "r", encoding = "utf-8", errors = "replace") as f:
+                data = f.read()
         elif filedata:
-            rnode = eltree.fromstring(filedata)
+            data = filedata.encode(encoding = "UTF-8", errors = "replace")
         else:
             return "hasnt_data", None
+
+        rnode = eltree.fromstring(data)
     except eltree.ParseError as err:
         return "cant_parse", str(err)
     except (FileNotFoundError, NotADirectoryError):
@@ -115,17 +119,23 @@ def project_update(request, project):
 
 
 def project_make_update(request, project):
+    if "exit" in request.POST:
+        return HttpResponseRedirect("/localsrv/admin/")
+
     if not modify_available(request.user):
         return alert_access_deny(request)
 
     prj = Project.objects.get(Slug = project)
-    fileobj = request.FILES["searchfile"]
     filename = None
     filedata = None
-    try:
-        filename = fileobj.file.name
-    except AttributeError:
-        filedata = fileobj.read()
+    if "searchfile" in request.FILES:
+        fileobj = request.FILES["searchfile"]
+        try:
+            filename = fileobj.file.name
+        except AttributeError:
+            filedata = fileobj.read()
+    else:
+        return alert_file_not_found(request, "/localsrv/admin/", 10, "")
 
     res, arg = project_make_parsing(project, filename, filedata)
     if res == None:
