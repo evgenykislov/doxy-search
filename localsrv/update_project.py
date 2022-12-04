@@ -56,18 +56,21 @@ def project_make_parsing(project, filename, filedata):
             if tag == "args" and fld.text is not None:
                 item_args = fld.text
         txt = ""
-        if item_type == "class" or item_type == "struct" or item_type == "variable":
-            dummy_tmp = 0
-        elif item_type == "source":
+        if item_type == "source":
             continue
         elif item_type == "function":
             item_name = item_name + item_args
             txt += item_name + "\n"
         elif item_type == "file":
             continue
-        else:
-            # return "unknown type: " + item_type
+        elif item_type == "page":
             continue
+#        elif not(item_type == "class" or item_type == "struct" or item_type == "variable" or \
+#                item_type == "enum" or item_type == "enumvalue" or \
+#                item_type == "typedef" or item_type == "define" or \
+#                item_type == "namespace" or item_type == "union"):
+#            return "unknown type: " + item_type, None
+
         tpc = Topic()
         tpc.Project = prj
         tpc.Type = item_type
