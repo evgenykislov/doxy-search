@@ -5,6 +5,8 @@ from .message_form import show_message, alert_file_not_found
 
 from localsrv.models import Project, Topic
 
+from lxml import etree
+
 import xml.etree.ElementTree as eltree
 
 
@@ -14,8 +16,11 @@ def project_parse(request, project):
     filename = prj.DoxySearchPath
     filename += "/searchdata.xml"
     try:
-        rnode = eltree.parse(filename).getroot()
-    except eltree.ParseError:
+        parser = etree.XMLParser(recover = True)
+        rnode = etree.parse(filename, parser = parser).getroot()
+#        rnode = eltree.parse(filename).getroot()
+    except etree.ParseError as err:
+        print(f"Поймано исключение: {err}")
         return show_message(request, "/localsrv/admin/", 10, "cant_parse_file")
     except (FileNotFoundError, NotADirectoryError):
         return alert_file_not_found(request, "/localsrv/admin/", 10, filename)
