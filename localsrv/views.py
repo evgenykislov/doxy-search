@@ -45,10 +45,19 @@ def project_search(request, project):
     try:
         query = request.GET["q"]
         ql = query.lower()
+        amount = int(request.GET["n"])
+        page = int(request.GET["p"])
         callback = request.GET["cb"]
     except MultiValueDictKeyError:
         # It is not search request
         return render(request, "search_help.html", {})
+    except ValueError:
+        # Ошибки в формате запроса - там не числа
+        # TODO выдать что-то другое
+        return render(request, "search_help.html", {})
+
+    start_records = amount * page
+    stop_records = amount * (page + 1)
     # Process search request
     items = []
     for tpc in Topic.objects.filter(Project=prj):
@@ -81,15 +90,21 @@ def project_search(request, project):
             item["url"] = tpc.Url
             item["fragments"] = frg
             items.append(item)
+    if amount > 0:
+        page_amount = (len(items) + amount - 1) // amount
+    else:
+        page_amount = 0
+    item_amount = len(items)
+    sub_items = items[start_records: stop_records]
 
     result = {}
-    result["hits"] = len(items)
-    result["first"] = 0
-    result["count"] = len(items)
-    result["page"] = 0
-    result["pages"] = 1
+    result["hits"] = item_amount
+    result["first"] = min(page * amount, item_amount)
+    result["count"] = len(sub_items)
+    result["page"] = page
+    result["pages"] = page_amount
     result["query"] = query
-    result["items"] = items
+    result["items"] = sub_items
 
     rt = callback + "(" + json.dumps(result) + ");"
     return HttpResponse(rt, content_type = "application/javascript")
